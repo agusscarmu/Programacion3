@@ -1,8 +1,6 @@
 package Tp1.Ejercicio5;
 
-import java.util.Iterator;
-
-public class Nodo<T> implements Iterable<T>{
+public class Nodo<T>{
     private T info;
     private Nodo<T> siguiente;
     public Nodo(){
@@ -28,10 +26,5 @@ public class Nodo<T> implements Iterable<T>{
 
     public T getInfo(){
         return info;
-    }
-    
-    @Override
-    public Iterator<T> iterator() {
-        return new Iterador<>(this);
     }
 }

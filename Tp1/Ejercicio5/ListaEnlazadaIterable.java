@@ -79,6 +79,6 @@ public class ListaEnlazadaIterable<T> implements Iterable<T>{
 
     @Override
     public Iterator<T> iterator() {
-        return front.iterator();
+        return new Iterador<>(front);
     }
 }
