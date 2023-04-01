@@ -24,9 +24,10 @@ public class Pila<T> {
     public void reverse(){
         
         ListaEnlazada<T>aux=new ListaEnlazada<>();
-
-        for(int i=0;i<aux.size();i++){
-            aux.insertFront(lista.get(i));
+        int size=lista.size();
+        
+        for(int i=0;i<size;i++){
+            aux.insertFront(lista.extractFront());
         }
 
         this.lista=aux;
