@@ -15,14 +15,26 @@ public class TreeNode {
 
     public int getHDer() {
         if(der!=null)
-            hDer+=der.getHDer();
+            hDer+=der.getH();
         return this.hDer;
     }
 
     public int getHIzq() {
         if(izq!=null)
-            hIzq+=izq.getHDer();
+            hIzq+=izq.getH();
         return this.hIzq;
+    }
+
+    public int getH(){
+        
+        int izquierda=getHIzq();
+        int derecha=getHDer();
+
+        if(izquierda>derecha)
+            return izquierda;
+        else
+            return derecha;
+        
     }
 
     public TreeNode(Integer info){

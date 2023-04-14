@@ -195,6 +195,14 @@ public class Tree {
 
     private void Delete(TreeNode nodo, Integer valor, TreeNode nodoPadre){
         if(nodo.getInfo()==valor){
+            if(nodoPadre==null){
+                TreeNode tmp = extractMaxElem(nodo.getIzq());
+                if(tmp.getInfo()!=nodo.getIzq().getInfo())
+                    tmp.setIzq(nodo.getIzq());
+                tmp.setDer(nodo.getDer());
+                raiz=tmp;
+                return;
+            }
             if(nodo.getIzq()==null && nodo.getDer()==null){
                 if(nodo.getInfo()<nodoPadre.getInfo()){
                     nodoPadre.setIzq(null);
