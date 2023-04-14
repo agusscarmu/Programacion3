@@ -1,4 +1,4 @@
-package Tp1.Ejercicio6;
+package Tp1.Ejercicio7;
 
 public class principal {
 
@@ -9,28 +9,28 @@ public class principal {
         ListaEnlazadaIterable<Integer> lista = new ListaEnlazadaIterable<>();
         ListaEnlazadaIterable<Integer> lista2 = new ListaEnlazadaIterable<>();
 
-        lista.insertFront(720);
-        lista.insertFront(500);
-        lista.insertFront(400);
-        lista.insertFront(100);
-        lista.insertFront(32);
-        lista.insertFront(30);
-        lista.insertFront(12);
+        lista.insertFront(5);
+        lista.insertFront(11);
+        lista.insertFront(9);
+        lista.insertFront(8);
+        lista.insertFront(3);
+        lista.insertFront(1);
+        lista.insertFront(2);
         lista.insertFront(4);
 
-        lista2.insertFront(995);
-        lista2.insertFront(821);
-        lista2.insertFront(720);
-        lista2.insertFront(500);
-        lista2.insertFront(400);
-        lista2.insertFront(100);
-        lista2.insertFront(35);
-        lista2.insertFront(32);
+        lista2.insertFront(8);
+        lista2.insertFront(7);
+        lista2.insertFront(2);
+        lista2.insertFront(1);
+        lista2.insertFront(9);
+        lista2.insertFront(5);
+        lista2.insertFront(4);
+        lista2.insertFront(3);
         
         Compilador compilador = new Compilador();
 
         ListaEnlazadaIterable<Integer> nuevaLista= new ListaEnlazadaIterable<>();
-        nuevaLista=compilador.enlazarListasOrdenadas(lista, lista2);
+        nuevaLista=compilador.elementosUnicos(lista, lista2);
 
         for(Integer i:nuevaLista){
             System.out.println(i);

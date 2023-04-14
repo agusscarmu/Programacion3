@@ -1,4 +1,4 @@
-package Tp1.Ejercicio6;
+package Tp1.Ejercicio7;
 
 import java.util.Iterator;
 
@@ -20,11 +20,6 @@ public class Iterador<T> implements Iterator<T>{
         T tmp = cursor.getInfo();
         cursor = cursor.getSiguiente();
         return tmp;
-    }
-
-    public T actual(){
-        T salida = cursor.getInfo();
-        return salida;
     }
     
 }

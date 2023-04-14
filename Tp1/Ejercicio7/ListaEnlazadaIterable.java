@@ -1,4 +1,4 @@
-package Tp1.Ejercicio6;
+package Tp1.Ejercicio7;
 
 import java.util.Iterator;
 
@@ -95,6 +95,7 @@ public class ListaEnlazadaIterable<T extends Comparable<T>> implements Iterable<
     }
 
     public boolean contains(T elem){
+        Nodo<T> tmp = front;
         for(T e:this){
             if(e.equals(elem)){
                 return true;

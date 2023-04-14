@@ -1,13 +1,14 @@
-package Tp1.Ejercicio6;
+package Tp1.Ejercicio8;
 
 import java.util.Iterator;
 
-public class ListaEnlazadaIterable<T extends Comparable<T>> implements Iterable<T>{
+public class ListaDobleEnlace<T extends Comparable<T>> implements Iterable<T>{
     
     private Nodo<T> front;
+    private Nodo<T> last;
     private int size;
 
-    public ListaEnlazadaIterable(){
+    public ListaDobleEnlace(){
         this.front=null;
         this.size=0;
     }
@@ -16,6 +17,9 @@ public class ListaEnlazadaIterable<T extends Comparable<T>> implements Iterable<
         Nodo<T> nodo= new Nodo<T>(elem, null);
         if(front==null || front.getInfo().compareTo(elem)<0){
             nodo.setSiguiente(front);
+            if(front!=null){
+                front.setAnterior(nodo);
+            }
             front=nodo;
         }else{
             Nodo<T> tmp = front;
@@ -23,8 +27,12 @@ public class ListaEnlazadaIterable<T extends Comparable<T>> implements Iterable<
                 tmp=tmp.getSiguiente();
             }
             nodo.setSiguiente(tmp.getSiguiente());
+            nodo.setAnterior(tmp);
             tmp.setSiguiente(nodo);
-
+            if(tmp.getSiguiente()!=null){
+                tmp=tmp.getSiguiente();
+                tmp.setAnterior(nodo);
+            }
         }
         size++;
     }
@@ -32,6 +40,11 @@ public class ListaEnlazadaIterable<T extends Comparable<T>> implements Iterable<
     public void insertFront(T elem){
         Nodo<T>nodo=new Nodo<>(elem,null);
         nodo.setSiguiente(front);
+        if(front!=null){
+            front.setAnterior(nodo);
+        }else{
+            last=nodo;
+        }
         front=nodo;
         size++;
     }
@@ -55,11 +68,9 @@ public class ListaEnlazadaIterable<T extends Comparable<T>> implements Iterable<
 
     public T get(int index){
         Nodo<T>cursor=front;
-
         for(int i=0;i<index;i++){
             cursor=cursor.getSiguiente();
         }
-        
         return cursor.getInfo();
     }
 
@@ -95,6 +106,7 @@ public class ListaEnlazadaIterable<T extends Comparable<T>> implements Iterable<
     }
 
     public boolean contains(T elem){
+        Nodo<T> tmp = front;
         for(T e:this){
             if(e.equals(elem)){
                 return true;
