@@ -1,5 +1,6 @@
 package Tp2.Tp2P1.Ejercicio1;
 
+
 public class Principal {
     
     public static void main(String[]args){
@@ -29,8 +30,11 @@ public class Principal {
         // arbol.printInOrder();
         // System.out.println(arbol.getMinElem()); 
         // System.out.println(arbol.Sum());
-        System.out.println(arbol.getHeight());
+        // System.out.println(arbol.getHeight());
+        
+        System.out.println(arbol.getLongestBranch().toString());
 
+        
 
     }
 }

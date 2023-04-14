@@ -1,6 +1,7 @@
 package Tp2.Tp2P1.Ejercicio1;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Tree {
@@ -34,40 +35,62 @@ public class Tree {
     public Integer getRoot(){
         return raiz.getValor();
     }
-
+    
     public boolean isEmpty(){
         return raiz==null;
     }
-
+    
     public boolean hasElem(Integer valor){
         return hasElem(this.raiz,valor);
     }
-
+    
     public void printPosOrder(){
         printPosOrder(this.raiz);
     }
-
+    
     public List<Integer> getFrontera(){
         return getFrontera(this.raiz);
     }
-
+    
     public List<Integer> getLongestBranch(){
         return getLongestBranch(this.raiz);
     }
-
+    
     private List<Integer> getLongestBranch(TreeNode nodo){
-        List<Integer> salida = new ArrayList<>();
-        if(nodo!=null){
-            salida.add(nodo.getValor());
+        List<Integer> listaIzquierda = new LinkedList<>();
+        List<Integer> listaDerecha = new LinkedList<>();
+
+        if(nodo.getIzq()!=null)
+            listaIzquierda=getLongestBranch(nodo.getIzq());
+        if(nodo.getDer()!=null)
+            listaDerecha=getLongestBranch(nodo.getDer());
+   
+        if(listaIzquierda.size()>listaDerecha.size()){
+            listaIzquierda.add(0, nodo.getInfo());
+            return listaIzquierda;
+        }else{
+            listaDerecha.add(0, nodo.getInfo());
+            return listaDerecha;
         }
-        if(nodo.getHIzq()>=nodo.getHDer() && nodo.getIzq()!=null){
-            salida.addAll(getLongestBranch(nodo.getIzq()));
-        }else if(nodo.getHIzq()<nodo.getHDer() && nodo.getDer()!=null){
-            salida.addAll(getLongestBranch(nodo.getDer()));
-        }
-        return salida;
+    }
+    
+    public int getHeight(){
+        return getHeight(this.raiz);
     }
 
+    private int getHeight(TreeNode nodo){
+        int hIzq=0,hDer=0;
+        if(nodo.getIzq()!=null)
+            hIzq=getHeight(nodo.getIzq())+1;
+        if(nodo.getDer()!=null)
+            hDer=getHeight(nodo.getDer())+1;
+
+        if(hIzq<hDer){
+            return hDer;
+        }else
+            return hIzq;
+    }
+    
     private List<Integer> getFrontera(TreeNode nodo){
         List<Integer> salida= new ArrayList<>();
         if(nodo.getIzq()!=null)
@@ -151,22 +174,6 @@ public class Tree {
         printPreOrder(nodo.getDer());
     }
 
-    public int getHeight(){
-        return getHeight(this.raiz);
-    }
-
-    private int getHeight(TreeNode nodo){
-        int hIzq=0,hDer=0;
-        if(nodo.getIzq()!=null)
-            hIzq=getHeight(nodo.getIzq())+1;
-        if(nodo.getDer()!=null)
-            hDer=getHeight(nodo.getDer())+1;
-
-        if(hIzq<hDer){
-            return hDer;
-        }else
-            return hIzq;
-    }
 
     private boolean hasElem(TreeNode nodo, Integer valor){
         if(nodo.getValor()>valor){
