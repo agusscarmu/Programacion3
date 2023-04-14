@@ -152,7 +152,20 @@ public class Tree {
     }
 
     public int getHeight(){
-        return getLongestBranch().size();
+        return getHeight(this.raiz);
+    }
+
+    private int getHeight(TreeNode nodo){
+        int hIzq=0,hDer=0;
+        if(nodo.getIzq()!=null)
+            hIzq=getHeight(nodo.getIzq())+1;
+        if(nodo.getDer()!=null)
+            hDer=getHeight(nodo.getDer())+1;
+
+        if(hIzq<hDer){
+            return hDer;
+        }else
+            return hIzq;
     }
 
     private boolean hasElem(TreeNode nodo, Integer valor){
@@ -244,5 +257,36 @@ public class Tree {
             if(nodo.getDer()!=null)
                 Delete(nodo.getDer(), valor, nodo);
         }
+    }
+
+    public int Sum(){
+        return Sum(this.raiz);
+    }
+
+    private int Sum(TreeNode nodo){
+        int salida=nodo.getInfo();
+        if(nodo.getIzq()!=null){
+            salida+=Sum(nodo.getIzq());
+        }
+        if(nodo.getDer()!=null){
+            salida+=Sum(nodo.getDer());
+        }
+        return salida;
+    }
+
+    public List<Integer> getListOver(int num){
+        return getListOver(this.raiz,num);
+    }
+
+    private List<Integer> getListOver(TreeNode nodo, int num){
+        List<Integer> salida = new ArrayList<>();
+        if(nodo.getIzq()!=null)
+            salida.addAll(getListOver(nodo.getIzq(), num));
+        if(nodo.getInfo()>num){
+            salida.add(nodo.getInfo());
+        }
+        if(nodo.getDer()!=null)
+            salida.addAll(getListOver(nodo.getDer(), num));
+        return salida;
     }
 }

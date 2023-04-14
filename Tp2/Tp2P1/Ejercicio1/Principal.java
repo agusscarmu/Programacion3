@@ -23,11 +23,13 @@ public class Principal {
 
         // System.out.println(arbol.hasElem(7));
         // System.out.println(arbol.getRoot());
-        arbol.printInOrder();
-        System.out.println("\n--------------------------------------------------------------------------------------------------------------------------");
-        arbol.Delete(5);
-        arbol.printInOrder();
+        // arbol.printInOrder();
+        // System.out.println("\n--------------------------------------------------------------------------------------------------------------------------");
+        // arbol.Delete(5);
+        // arbol.printInOrder();
         // System.out.println(arbol.getMinElem()); 
+        // System.out.println(arbol.Sum());
+        System.out.println(arbol.getHeight());
 
 
     }
