@@ -23,10 +23,10 @@ public class Principal {
         // while(g.hasNext()){
         //     System.out.println(g.next());
         // }
-        
+        System.out.println(grafo.contieneVertice(6));
         Busquedas<Integer> busquedas = new Busquedas<>();
         
         // busquedas.DepthFirstSearch(grafo);
-        busquedas.BreadthFirstSearch(grafo);
+        // busquedas.BreadthFirstSearch(grafo);
     }
 }

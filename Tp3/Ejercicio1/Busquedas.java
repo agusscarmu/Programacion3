@@ -8,7 +8,7 @@ import java.util.Iterator;
 public class Busquedas<T> {
     
     public void DepthFirstSearch(Grafo<T> grafo){
-        HashMap<Integer, String> map = new HashMap<>();
+        HashMap<Integer, String> map = new HashMap<>(); //Deberia usar una clase Vertice?
 
         Iterator<Integer> vertices = grafo.obtenerVertices();
         while(vertices.hasNext()){
@@ -19,7 +19,7 @@ public class Busquedas<T> {
         while(vertices2.hasNext()){
             Integer v=vertices2.next();
             if(map.get(v)=="NO_VISITED"){
-                DFS_visit(v,grafo,map);
+                DFS_visit(v,grafo,map); //Esta bien mandar tantos parametros?
             }
         }
     }
@@ -55,13 +55,14 @@ public class Busquedas<T> {
         while(vertices2.hasNext()){
             Integer v=vertices2.next();
             if(map.get(v)=="NO_VISITED"){
-                BFS_visit(v,grafo,map,lista);
+                BFS_visit(v,grafo,map,lista); //Lo mismo con los parametros
             }
         }
 
     }
 
-    public void BFS_visit(Integer v, Grafo<T> grafo, HashMap<Integer,String> map, ArrayList<Integer> lista){
+    public void BFS_visit(Integer v, Grafo<T> grafo, HashMap<Integer,String> map, ArrayList<Integer> lista){ 
+        //Esta bien implementado?
         map.put(v, "VISITED");
         lista.add(v);
 

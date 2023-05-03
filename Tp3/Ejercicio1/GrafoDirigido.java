@@ -105,6 +105,8 @@ public class GrafoDirigido implements Grafo<Integer> {
         return salida;
     }
 
+
+    //Los iteradores estan bien hechos?
     @Override
     public Iterator<Integer> obtenerVertices() {
         Set<Integer> s = vertices.keySet();
