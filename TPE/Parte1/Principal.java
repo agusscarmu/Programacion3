@@ -6,8 +6,6 @@ public class Principal {
 
         Grafo<Integer> grafo = new GrafoDirigido<>();
 
-
-
         grafo.agregarVertice(1);
         grafo.agregarVertice(2);
         grafo.agregarVertice(3);
