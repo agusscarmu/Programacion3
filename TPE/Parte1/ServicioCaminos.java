@@ -22,23 +22,37 @@ public class ServicioCaminos {
 	}
 
 	public List<List<Integer>> caminos() {
-        int saltos=0;
-		List<List<Integer>> salida = new LinkedList<>();
-    
-        // Iterator<Integer> vertices = grafo.obtenerVertices();
-        // while(vertices.hasNext()){
-        //     map.put(vertices.next(), "NO_VISITED");
-        // }
+        List<List<Integer>> salida = new LinkedList<>();
+        List<Integer> camino = new LinkedList<>();
+        camino.add(origen);
         Iterator<Integer> adj = grafo.obtenerAdyacentes(origen);
         while(adj.hasNext()){
-            salida.add(caminos(saltos));
+            int v = adj.next();
+            System.out.println(v);
+            List<Integer> caminoCopia = new LinkedList<>(camino);
+            int limite=this.lim;
+            caminoCopia.add(v);
+            caminos(v,limite,caminoCopia,salida);
         }
 		return salida;
 	}
 
-    private List<Integer> caminos(int saltos){
-        List<Integer> salida = new LinkedList<>();
+    private void caminos(int v, int limite, List<Integer> camino, List<List<Integer>> salida){
 
-        return salida;
+        if(limite>0){
+            if(v==destino){
+                salida.add(camino);
+            }else{
+                Iterator<Integer> vertices = grafo.obtenerAdyacentes(v);
+                while(vertices.hasNext()){
+                    int vertice = vertices.next();
+                    List<Integer> copia = new LinkedList<>(camino);
+                    // if(!camino.contains(vertice)){
+                        copia.add(vertice);
+                        caminos(vertice, limite-1, copia, salida);
+                    // }
+                }
+            }
+        }
     }
 }

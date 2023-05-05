@@ -63,7 +63,10 @@ public class Principal {
         ServicioDFS dfs = new ServicioDFS(grafo); 
         ServicioBFS bfs = new ServicioBFS(grafo);
 
-        System.out.println(dfs.dfsForest().toString());
+        // System.out.println(dfs.dfsForest().toString());
+
+        ServicioCaminos servicioCaminos = new ServicioCaminos(grafo, 2, 5, 4);
+        System.out.println(servicioCaminos.caminos().toString());
 
     }
 }

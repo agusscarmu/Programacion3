@@ -10,22 +10,22 @@ public class IteradorAdyacentes<T> implements Iterator<Integer>{
 
     private HashMap<Integer,List<Arco<T>>> vertices;
     private int v;
+    private Iterator<Arco<T>> iterador;
 
     public IteradorAdyacentes(HashMap<Integer,List<Arco<T>>> vertices, int v){
         this.vertices=vertices;
         this.v=v;
+        this.iterador=vertices.get(v).iterator();
     }
 
     @Override
     public boolean hasNext() {
-        return !vertices.get(v).isEmpty();
+        return iterador.hasNext();
     }
 
     @Override
     public Integer next() {
-        Integer tmp = vertices.get(v).get(0).getVertice2();
-        vertices.get(v).remove(vertices.get(v).get(0));
-        return tmp;
+        return iterador.next().getVertice2();
     }
     
 }
