@@ -11,6 +11,7 @@ public class ServicioCaminos {
 	private int destino;
 	private int lim;
     private HashMap<Integer, String> map;
+    private List<List<Integer>> salida;
 	
 	// Servicio caminos
 	public ServicioCaminos(Grafo<?> grafo, int origen, int destino, int lim) {
@@ -18,11 +19,11 @@ public class ServicioCaminos {
 		this.origen = origen;
 		this.destino = destino;
 		this.lim = lim;
-        this.map= new HashMap<>();
+        this.map = new HashMap<>();
+        this.salida = new LinkedList<>();
 	}
 
 	public List<List<Integer>> caminos() {
-        List<List<Integer>> salida = new LinkedList<>();
         List<Integer> camino = new LinkedList<>();
         camino.add(origen);
         Iterator<Integer> adj = grafo.obtenerAdyacentes(origen);
@@ -30,12 +31,12 @@ public class ServicioCaminos {
             int v = adj.next();
             System.out.println(v);
             int limite=this.lim;
-            caminos(v,limite,camino,salida);
+            caminos(v,limite,camino);
         }
 		return salida;
 	}
 
-    private void caminos(Integer v, int limite, List<Integer> camino, List<List<Integer>> salida){
+    private void caminos(Integer v, int limite, List<Integer> camino){
         camino.add(v);
         if(limite>0){
             if(v.equals(destino)){
@@ -44,12 +45,11 @@ public class ServicioCaminos {
                 Iterator<Integer> vertices = grafo.obtenerAdyacentes(v);
                 while(vertices.hasNext()){
                     int vertice = vertices.next();
-                    List<Integer> copia = new LinkedList<>(camino);
-                    caminos(vertice, limite-1, copia, salida);
+                    caminos(vertice, limite-1, new LinkedList<>(camino));
                 }
             }
         }
         if(!v.equals(destino))
-            camino.remove(v);
+        camino.remove(v);
     }
 }
