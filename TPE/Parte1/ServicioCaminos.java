@@ -29,30 +29,27 @@ public class ServicioCaminos {
         while(adj.hasNext()){
             int v = adj.next();
             System.out.println(v);
-            List<Integer> caminoCopia = new LinkedList<>(camino);
             int limite=this.lim;
-            caminoCopia.add(v);
-            caminos(v,limite,caminoCopia,salida);
+            caminos(v,limite,camino,salida);
         }
 		return salida;
 	}
 
-    private void caminos(int v, int limite, List<Integer> camino, List<List<Integer>> salida){
-
+    private void caminos(Integer v, int limite, List<Integer> camino, List<List<Integer>> salida){
+        camino.add(v);
         if(limite>0){
-            if(v==destino){
+            if(v.equals(destino)){
                 salida.add(camino);
             }else{
                 Iterator<Integer> vertices = grafo.obtenerAdyacentes(v);
                 while(vertices.hasNext()){
                     int vertice = vertices.next();
                     List<Integer> copia = new LinkedList<>(camino);
-                    // if(!camino.contains(vertice)){
-                        copia.add(vertice);
-                        caminos(vertice, limite-1, copia, salida);
-                    // }
+                    caminos(vertice, limite-1, copia, salida);
                 }
             }
         }
+        if(!v.equals(destino))
+            camino.remove(v);
     }
 }
