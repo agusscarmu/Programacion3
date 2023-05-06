@@ -8,13 +8,9 @@ import Parte1.Arco;
 
 public class IteradorAdyacentes<T> implements Iterator<Integer>{
 
-    private HashMap<Integer,List<Arco<T>>> vertices;
-    private int v;
     private Iterator<Arco<T>> iterador;
 
     public IteradorAdyacentes(HashMap<Integer,List<Arco<T>>> vertices, int v){
-        this.vertices=vertices;
-        this.v=v;
         this.iterador=vertices.get(v).iterator();
     }
 

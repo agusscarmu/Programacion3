@@ -113,12 +113,12 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
     @Override
     public Iterator<Integer> obtenerAdyacentes(int vertice) {
-        return new IteradorAdyacentes(this.vertices,vertice);
+        return new IteradorAdyacentes<T>(this.vertices,vertice);
     }
 
     @Override
     public Iterator<Arco<T>> obtenerArcos() {
-        return new IteradorArco(this.vertices, vertices.keySet());
+        return new IteradorArco<T>(this.vertices, vertices.keySet());
     }
 
     @Override
