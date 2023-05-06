@@ -40,16 +40,16 @@ public class ServicioCaminos {
         camino.add(v);
         if(limite>0){
             if(v.equals(destino)){
-                salida.add(camino);
+                salida.add(new LinkedList<>(camino));
             }else{
                 Iterator<Integer> vertices = grafo.obtenerAdyacentes(v);
                 while(vertices.hasNext()){
                     int vertice = vertices.next();
-                    caminos(vertice, limite-1, new LinkedList<>(camino));
+                    caminos(vertice, limite-1, camino);
                 }
             }
         }
-        if(!v.equals(destino))
-        camino.remove(v);
+        camino.remove(camino.size()-1);
+        
     }
 }
