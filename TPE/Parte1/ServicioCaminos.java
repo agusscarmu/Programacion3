@@ -10,8 +10,9 @@ public class ServicioCaminos {
 	private int origen;
 	private int destino;
 	private int lim;
-    private HashMap<Integer, String> map;
+    private HashMap<Arco<?>, String> map;
     private List<List<Integer>> salida;
+    private List<Integer> camino;
 	
 	// Servicio caminos
 	public ServicioCaminos(Grafo<?> grafo, int origen, int destino, int lim) {
@@ -21,23 +22,29 @@ public class ServicioCaminos {
 		this.lim = lim;
         this.map = new HashMap<>();
         this.salida = new LinkedList<>();
+        this.camino = new LinkedList<>();
 	}
 
 	public List<List<Integer>> caminos() {
-        List<Integer> camino = new LinkedList<>();
+        Iterator<?> arcos = grafo.obtenerArcos();
+        while(arcos.hasNext()){
+            map.put((Arco<?>) arcos.next(), "NO_VISITED");
+        }
         camino.add(origen);
         Iterator<Integer> adj = grafo.obtenerAdyacentes(origen);
         while(adj.hasNext()){
             int v = adj.next();
             System.out.println(v);
             int limite=this.lim;
-            caminos(v,limite,camino);
+            Arco<?>arco = grafo.obtenerArco(origen, v);
+            caminos(v,limite,arco);
         }
 		return salida;
 	}
 
-    private void caminos(Integer v, int limite, List<Integer> camino){
+    private void caminos(Integer v, int limite, Arco<?> arcoActual){
         camino.add(v);
+        map.put(arcoActual, "VISITED");
         if(limite>0){
             if(v.equals(destino)){
                 salida.add(new LinkedList<>(camino));
@@ -45,10 +52,12 @@ public class ServicioCaminos {
                 Iterator<Integer> vertices = grafo.obtenerAdyacentes(v);
                 while(vertices.hasNext()){
                     int vertice = vertices.next();
-                    caminos(vertice, limite-1, camino);
+                    Arco<?>arco = grafo.obtenerArco(v, vertice);
+                    caminos(vertice, limite-1, arco); 
                 }
             }
         }
+        map.put(arcoActual, "NO_VISITED");
         camino.remove(camino.size()-1);
         
     }
