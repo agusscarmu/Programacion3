@@ -34,8 +34,10 @@ public class GrafoDirigido<T> implements Grafo<T> {
     @Override
     public void agregarArco(int vertice1, int vertice2, T etiqueta) {
         if(contieneVertice(vertice1) && contieneVertice(vertice2)){
+            if(!existeArco(vertice1, vertice2)){
             Arco<T> arco = new Arco<T>(vertice1, vertice2, etiqueta);
             vertices.get(vertice1).add(arco);
+            }
         }
     }
 
@@ -47,9 +49,21 @@ public class GrafoDirigido<T> implements Grafo<T> {
         }
     }
 
+    // public void borrarArcos(int vertice){
+    //     Set<Integer> s = vertices.keySet();
+    //     for(Integer a:s){
+    //         for(int i=0;i<vertices.get(a).size();i++){
+    //             if(vertices.get(a).get(i).getVertice2()==vertice){
+    //                 borrarArco(a, vertice);
+    //             }
+    //         }
+    //     }
+    // }
+
     public void borrarArcos(int vertice){
-        Set<Integer> s = vertices.keySet();
-        for(Integer a:s){
+        Iterator<Integer> v = this.obtenerVertices();
+        while(v.hasNext()){
+            Integer a = v.next();
             for(int i=0;i<vertices.get(a).size();i++){
                 if(vertices.get(a).get(i).getVertice2()==vertice){
                     borrarArco(a, vertice);
@@ -118,7 +132,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
     @Override
     public Iterator<Arco<T>> obtenerArcos() {
-        return new IteradorArco<T>(this.vertices, vertices.keySet());
+        return new IteradorArco<T>(this);
     }
 
     @Override

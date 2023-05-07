@@ -1,55 +1,41 @@
 package Parte1.Iteradores;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import Parte1.Arco;
+import Parte1.Grafo;
 
 public class IteradorArco<T> implements Iterator<Arco<T>>{
 
-    private HashMap<Integer,List<Arco<T>>> vertices;
-    private int puntero;
-    private Iterator<Integer> iterador;
-    private int index;
+    private Integer verticeActual;
+    private Iterator<Integer> vertices;
+    private Iterator<Arco<T>> arcos;
+    private Grafo<T> grafo;
 
-    public IteradorArco(HashMap<Integer,List<Arco<T>>> vertices, Set<Integer> s){
-        this.vertices=new HashMap<>(vertices);
-        this.iterador=s.iterator();
-        puntero=iterador.next();
-        index=0;
-    }
-
-    public IteradorArco(HashMap<Integer,List<Arco<T>>> vertices, Integer puntero){
-        this.vertices=vertices;
-        this.puntero=puntero;
+    public IteradorArco(Grafo<T> grafo){
+        this.grafo=grafo;
+        this.vertices = grafo.obtenerVertices();
+        this.verticeActual = vertices.next();
+        this.arcos=grafo.obtenerArcos(verticeActual);
     }
 
     @Override
     public boolean hasNext() {
-        if(vertices.get(puntero).size()>index){
+        if(arcos.hasNext()){
             return true;
+        }
+        else if(vertices.hasNext()){
+            verticeActual=vertices.next();
+            arcos=grafo.obtenerArcos(verticeActual);
+            return this.hasNext();
         }else{
-            index=0;
-            if(iterador==null){
-                return false;
-            }else{
-                if(iterador.hasNext()){
-                    puntero=iterador.next();
-                    return this.hasNext();
-                }else{
-                    return false;
-                }
-            }
+            return false;
         }
     }
 
     @Override
     public Arco<T> next() {
-        Arco<T> tmp = vertices.get(puntero).get(index);
-        index++;
-        return tmp;
+        return arcos.next();
     }
     
 }
