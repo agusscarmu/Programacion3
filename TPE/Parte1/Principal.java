@@ -68,15 +68,15 @@ public class Principal {
         // System.out.println(dfs.dfsForest().toString());
 
         ServicioCaminos servicioCaminos = new ServicioCaminos(grafo, 2, 5, 10);
-        System.out.println(servicioCaminos.caminos().toString());
+        // System.out.println(servicioCaminos.caminos().toString());
 
         grafo.borrarVertice(5);
         // Iterator<Integer> vertices = grafo.obtenerVertices();
         Iterator<Arco<Integer>> arcos = grafo.obtenerArcos();
 
-        // while(arcos.hasNext()){
-        //     System.out.println(arcos.next());
-        // }
+        while(arcos.hasNext()){
+            System.out.println(arcos.next());
+        }
 
         // while(vertices.hasNext()){
         //     System.out.println(vertices.next());

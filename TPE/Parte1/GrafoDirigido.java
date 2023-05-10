@@ -78,15 +78,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
     @Override
     public boolean existeArco(int vertice1, int vertice2) {
-        if(contieneVertice(vertice1)){
-            List<Arco<T>> arco = vertices.get(vertice1);
-            for(Arco<T> a:arco){
-                if(a.getVerticeDestino()==vertice2){
-                    return true;
-                }
-            }
-        }
-        return false;
+        return(obtenerArco(vertice1, vertice2)!=null);
     }
 
     @Override
