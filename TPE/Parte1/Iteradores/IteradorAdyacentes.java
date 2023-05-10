@@ -21,7 +21,7 @@ public class IteradorAdyacentes<T> implements Iterator<Integer>{
 
     @Override
     public Integer next() {
-        return iterador.next().getVertice2();
+        return iterador.next().getVerticeDestino();
     }
     
 }

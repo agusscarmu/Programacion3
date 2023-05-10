@@ -34,10 +34,8 @@ public class ServicioCaminos {
         Iterator<Integer> adj = grafo.obtenerAdyacentes(origen);
         while(adj.hasNext()){
             int v = adj.next();
-            System.out.println(v);
-            int limite=this.lim;
             Arco<?>arco = grafo.obtenerArco(origen, v);
-            caminos(v,limite,arco);
+            caminos(v,lim,arco);
         }
 		return salida;
 	}
@@ -47,13 +45,15 @@ public class ServicioCaminos {
         map.put(arcoActual, "VISITED");
         if(limite>0){
             if(v.equals(destino)){
-                salida.add(new LinkedList<>(camino));
+                salida.add(new LinkedList<>(camino)); //Es necesaria la copia? si no la genero me remueve los originales
             }else{
                 Iterator<Integer> vertices = grafo.obtenerAdyacentes(v);
                 while(vertices.hasNext()){
                     int vertice = vertices.next();
-                    Arco<?>arco = grafo.obtenerArco(v, vertice);
-                    caminos(vertice, limite-1, arco); 
+                    Arco<?>arco = grafo.obtenerArco(v, vertice);//Si devuelve copia no anda, esta bien devolver el arco original?
+                    // System.out.println(map.get(arco));
+                    if(map.get(arco)=="NO_VISITED") 
+                        caminos(vertice, limite-1, arco); 
                 }
             }
         }

@@ -1,29 +1,29 @@
 package Parte1;
 
 public class Arco<T> {
-    private int vertice1, vertice2;
+    private int verticeOrigen, verticeDestino;
     private T etiqueta;
 
-    public Arco(int vertice1, int vertice2, T etiqueta){
-        this.vertice1=vertice1;
-        this.vertice2=vertice2;
+    public Arco(int verticeOrigen, int verticeDestino, T etiqueta){
+        this.verticeOrigen=verticeOrigen;
+        this.verticeDestino=verticeDestino;
         this.etiqueta=etiqueta;
     }
 
-    public int getVertice1() {
-        return this.vertice1;
+    public int getVerticeOrigen() {
+        return this.verticeOrigen;
     }
 
-    public void setVertice1(int vertice1) {
-        this.vertice1 = vertice1;
+    public void setVerticeOrigen(int verticeOrigen) {
+        this.verticeOrigen = verticeOrigen;
     }
 
-    public int getVertice2() {
-        return this.vertice2;
+    public int getVerticeDestino() {
+        return this.verticeDestino;
     }
 
-    public void setVertice2(int vertice2) {
-        this.vertice2 = vertice2;
+    public void setVerticeDestino(int verticeDestino) {
+        this.verticeDestino = verticeDestino;
     }
 
     public T getEtiqueta() {
@@ -36,7 +36,7 @@ public class Arco<T> {
 
     @Override
     public String toString() {
-        return "Vertice1: "+vertice1+",Vertice2: "+vertice2+",Etiqueta: "+etiqueta;
+        return "verticeOrigen: "+verticeOrigen+",verticeDestino: "+verticeDestino+",Etiqueta: "+etiqueta;
     }
     
     @Override
