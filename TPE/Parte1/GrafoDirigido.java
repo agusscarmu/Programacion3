@@ -54,7 +54,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
     @Override
     public void borrarArco(int vertice1, int vertice2) {
         if(contieneVertice(vertice1)){
-            Arco<T> arco = obtenerArco(vertice1, vertice2);
+            Arco<T> arco = obtenerArco(vertice1, vertice2);//crear arco
             vertices.get(vertice1).remove(arco); // O(n*m)
         }
     }
@@ -86,7 +86,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
         if(contieneVertice(vertice1)){
             for(Arco<T> a:vertices.get(vertice1)){
                 if(a.getVerticeDestino()==vertice2){
-                    return a;
+                    return new Arco<T>(vertice1, vertice2, a.getEtiqueta());
                 }
             }
         }

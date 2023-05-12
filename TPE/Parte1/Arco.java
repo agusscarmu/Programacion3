@@ -14,25 +14,14 @@ public class Arco<T> {
         return this.verticeOrigen;
     }
 
-    public void setVerticeOrigen(int verticeOrigen) {
-        this.verticeOrigen = verticeOrigen;
-    }
-
     public int getVerticeDestino() {
         return this.verticeDestino;
-    }
-
-    public void setVerticeDestino(int verticeDestino) {
-        this.verticeDestino = verticeDestino;
     }
 
     public T getEtiqueta() {
         return this.etiqueta;
     }
 
-    public void setEtiqueta(T etiqueta) {
-        this.etiqueta = etiqueta;
-    }
 
     @Override
     public String toString() {
@@ -40,7 +29,29 @@ public class Arco<T> {
     }
     
     @Override
-    public boolean equals(Object obj) {
-        return ((Arco<T>)obj).etiqueta.equals(this.etiqueta);
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + verticeOrigen;
+        result = prime * result + verticeDestino;
+        return result;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Arco other = (Arco) obj;
+        if (verticeOrigen != other.verticeOrigen)
+            return false;
+        if (verticeDestino != other.verticeDestino)
+            return false;
+        return true;
+    }
+
+    
 }

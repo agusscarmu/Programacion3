@@ -30,34 +30,29 @@ public class ServicioCaminos {
         while(arcos.hasNext()){
             map.put((Arco<?>) arcos.next(), "NO_VISITED");
         }
-        camino.add(origen);
-        Iterator<Integer> adj = grafo.obtenerAdyacentes(origen);
-        while(adj.hasNext()){
-            int v = adj.next();
-            Arco<?>arco = grafo.obtenerArco(origen, v);
-            caminos(v,lim,arco);
-        }
+        caminos(origen, lim, null);
 		return salida;
 	}
 
     private void caminos(Integer v, int limite, Arco<?> arcoActual){
         camino.add(v);
-        map.put(arcoActual, "VISITED");
-        if(limite>0){
+        if(arcoActual!=null)
+            map.put(arcoActual, "VISITED");
+        if(limite>=0){ 
             if(v.equals(destino)){
-                salida.add(new LinkedList<>(camino)); //Es necesaria la copia? si no la genero me remueve los originales
+                salida.add(new LinkedList<>(camino));
             }else{
                 Iterator<Integer> vertices = grafo.obtenerAdyacentes(v);
                 while(vertices.hasNext()){
                     int vertice = vertices.next();
-                    Arco<?>arco = grafo.obtenerArco(v, vertice);//Si devuelve copia no anda, esta bien devolver el arco original?
-                    // System.out.println(map.get(arco));
+                    Arco<?>arco = grafo.obtenerArco(v, vertice);
                     if(map.get(arco)=="NO_VISITED") 
                         caminos(vertice, limite-1, arco); 
                 }
             }
         }
-        map.put(arcoActual, "NO_VISITED");
+        if(arcoActual!=null)
+            map.put(arcoActual, "NO_VISITED");
         camino.remove(camino.size()-1);
         
     }
