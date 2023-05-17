@@ -27,29 +27,30 @@ public class SalidaLaberinto {
                 }
             }
         }
-        buscarSalida(posicionX, posicionY, caminos, fin);
+        buscarSalida(posicionX, posicionY, caminos, fin, 0);
         return salida;
     }
 
-    private void buscarSalida(int posicionX, int posicionY, ArrayList<Integer> caminos, int fin){
+    private void buscarSalida(int posicionX, int posicionY, ArrayList<Integer> caminos, int fin, int sumaValores){
+        sumaValores+=laberinto[posicionY][posicionX].getValor();
         caminos.add(laberinto[posicionY][posicionX].getValor());
 
         if(laberinto[posicionY][posicionX].getValor()==fin){
-            if(caminos.size()<salida.size() || salida.isEmpty()){
+            if(sumaMenor==0 || sumaValores<sumaMenor){
                 salida=new ArrayList<>(caminos);
             }
         }else{
             if(laberinto[posicionY][posicionX].arriba()){
-                buscarSalida(posicionX, posicionY-1, caminos, fin);
+                buscarSalida(posicionX, posicionY-1, caminos, fin, sumaValores);
             }
             if(laberinto[posicionY][posicionX].abajo()){
-                buscarSalida(posicionX, posicionY+1, caminos, fin);
+                buscarSalida(posicionX, posicionY+1, caminos, fin, sumaValores);
             }
             if(laberinto[posicionY][posicionX].izquierda()){
-                buscarSalida(posicionX-1, posicionY, caminos, fin);
+                buscarSalida(posicionX-1, posicionY, caminos, fin, sumaValores);
             }
             if(laberinto[posicionY][posicionX].derecha()){
-                buscarSalida(posicionX+1, posicionY, caminos, fin);
+                buscarSalida(posicionX+1, posicionY, caminos, fin, sumaValores);
             }
         }
 
