@@ -37,4 +37,26 @@ public class CasillaLaberinto {
     public String toString() {
         return Integer.toString(valor);
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + valor;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CasillaLaberinto other = (CasillaLaberinto) obj;
+        if (valor != other.valor)
+            return false;
+        return true;
+    }
 }

@@ -1,16 +1,24 @@
 package Ejercicio2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SalidaLaberinto {
     private CasillaLaberinto[][]laberinto;
     private ArrayList<Integer> salida;
     private int sumaMenor;
+    private HashMap<CasillaLaberinto,String> casillasVisitadas;
 
     public SalidaLaberinto(CasillaLaberinto[][]laberinto){
         this.laberinto=laberinto;
         this.salida=new ArrayList<>();
-        this.sumaMenor=0;
+        this.sumaMenor=Integer.MAX_VALUE;
+        this.casillasVisitadas=new HashMap<>();
+        for(int i=0;i<laberinto.length;i++){
+            for(int j=0;j<laberinto[i].length;j++){
+                casillasVisitadas.put(laberinto[i][j], "NO_VISITED");
+            }
+        }
     }
 
     public ArrayList<Integer> buscarSalida(int comienzo, int fin){
@@ -32,28 +40,34 @@ public class SalidaLaberinto {
     }
 
     private void buscarSalida(int posicionX, int posicionY, ArrayList<Integer> caminos, int fin, int sumaValores){
+        casillasVisitadas.put(laberinto[posicionY][posicionX], "VISITED");
         sumaValores+=laberinto[posicionY][posicionX].getValor();
         caminos.add(laberinto[posicionY][posicionX].getValor());
 
         if(laberinto[posicionY][posicionX].getValor()==fin){
-            if(sumaMenor==0 || sumaValores<sumaMenor){
                 salida=new ArrayList<>(caminos);
-            }
+                sumaMenor=sumaValores;
         }else{
-            if(laberinto[posicionY][posicionX].arriba()){
-                buscarSalida(posicionX, posicionY-1, caminos, fin, sumaValores);
-            }
-            if(laberinto[posicionY][posicionX].abajo()){
-                buscarSalida(posicionX, posicionY+1, caminos, fin, sumaValores);
-            }
-            if(laberinto[posicionY][posicionX].izquierda()){
-                buscarSalida(posicionX-1, posicionY, caminos, fin, sumaValores);
-            }
-            if(laberinto[posicionY][posicionX].derecha()){
-                buscarSalida(posicionX+1, posicionY, caminos, fin, sumaValores);
+            if(sumaValores<sumaMenor){
+                if(laberinto[posicionY][posicionX].arriba()){
+                    if(casillasVisitadas.get(laberinto[posicionY-1][posicionX])=="NO_VISITED")
+                        buscarSalida(posicionX, posicionY-1, caminos, fin, sumaValores);
+                }
+                if(laberinto[posicionY][posicionX].abajo()){
+                    if(casillasVisitadas.get(laberinto[posicionY+1][posicionX])=="NO_VISITED")
+                        buscarSalida(posicionX, posicionY+1, caminos, fin, sumaValores);
+                }
+                if(laberinto[posicionY][posicionX].izquierda()){
+                    if(casillasVisitadas.get(laberinto[posicionY][posicionX-1])=="NO_VISITED")
+                        buscarSalida(posicionX-1, posicionY, caminos, fin, sumaValores);
+                }
+                if(laberinto[posicionY][posicionX].derecha()){
+                    if(casillasVisitadas.get(laberinto[posicionY][posicionX+1])=="NO_VISITED")
+                        buscarSalida(posicionX+1, posicionY, caminos, fin, sumaValores);
+                }
             }
         }
-
+        casillasVisitadas.put(laberinto[posicionY][posicionX], "NO_VISITED");
         caminos.remove(caminos.size()-1);
     }
 }
