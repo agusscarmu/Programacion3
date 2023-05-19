@@ -1,7 +1,5 @@
 package Parte1;
 
-import java.util.LinkedList;
-
 public class Principal {
     
     public static void main(String[]args){
@@ -67,7 +65,7 @@ public class Principal {
 
         // System.out.println(dfs.dfsForest().toString());
 
-        ServicioCaminos servicioCaminos = new ServicioCaminos(grafo, 2, 5, 2148);
+        ServicioCaminos servicioCaminos = new ServicioCaminos(grafo, 2, 5, 6);
         // System.out.println(servicioCaminos.caminos().toString());
 
         // Iterator<Integer> vertices = grafo.obtenerVertices();
@@ -80,14 +78,9 @@ public class Principal {
                 //     System.out.println(vertices.next());
                 // }
                 
-                LinkedList<Integer> lista = new LinkedList<>();
-                
-                for(int i=1;i<=10;i++){
-                    
-                    lista.add(i);
-                }
-                
-                // grafo.borrarVertice(5);
+
+                grafo.borrarVertice(5);
+                grafo.borrarArco(4, 1);
                 System.out.println(grafo.cantidadArcos());
             }
         }

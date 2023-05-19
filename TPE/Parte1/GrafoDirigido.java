@@ -20,7 +20,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
     }
 
     /*
-     * al utilizar HashMap cuando se hace llamado a la funcion "put" esta destinando la clave 
+     * Al utilizar HashMap cuando se hace llamado a la funcion "put" esta destinando la clave 
      * (en este caso de tipo Integer) a una formula matematica la cual genera el
      * indice a travez del resto entre el Integer ingresado y el tamaño del HashMap. En caso de que el indice generado ya 
      * exista dentro del HashMap, va a producirse lo que se conoce como 'colision' de los elementos, lo cual genera una lista
@@ -63,39 +63,36 @@ public class GrafoDirigido<T> implements Grafo<T> {
             if(!existeArco(vertice1, vertice2)){
             Arco<T> arco = new Arco<T>(vertice1, vertice2, etiqueta);
             vertices.get(vertice1).add(arco);
+            cantidadArcos++; 
             }
         }
-        cantidadArcos++;
     }
 
     /*
-     * La funcion borrarArco() cuenta con una complejidad O(n) donde n es la cantidad de arcos que tiene el vertice1, dado
-     * que la funcion remove() de una Lista Enlazada de java.util lo que hace es iterar entre todos sus nodos enlazados 
-     * hasta que el elemento que se esta enviando sea igual al elemento inspeccionado en la iteracion.
+     * La funcion borrarArco() cuenta con una complejidad O(n) donde n es la cantidad de arcos que tiene el vertice1 (en el 
+     * peor de los casos el vertice1 va a estar conectado a todos los otros vertices del grafo), dado que la funcion 
+     * remove() de una Lista Enlazada de java.util lo que hace es iterar entre todos sus nodos enlazados hasta que el 
+     * elemento que se esta enviando sea igual al elemento inspeccionado en la iteracion. Y tambien hay que tener en cuenta
+     * que la funcion obtenerArco() cuenta con una complejidad O(n)
      */
     @Override
     public void borrarArco(int vertice1, int vertice2) {
         if(contieneVertice(vertice1)){
             Arco<T> arco = obtenerArco(vertice1, vertice2);
-            vertices.get(vertice1).remove(arco); 
+            if(vertices.get(vertice1).remove(arco))
+                cantidadArcos--;
         }
-        cantidadArcos--;
     }
 
     /*
-     * La funcion borrarArcos tiene una complejidad de O(n^2) debido a que en un principio itera todos los vertices del
-     * grafo, para despues recorrer todos los arcos de cada uno, en el peor de los casos un vertice va a estar conectado a
-     * todos los vertices 
+     * La funcion borrarArcos tiene una complejidad de O(n^2) siendo n la cantidad de vertices en el grafo, y tiene dicha 
+     * complejidad debido a que en un principio itera todos los vertices del grafo, para despues llamar a la funcion
+     * borrarArco() por cada iteracion (la cual cuenta con una complejidad O(n))
      */
     private void borrarArcos(int vertice){
         Iterator<Integer> v = this.obtenerVertices();
-        while(v.hasNext()){ // O(n)
-            Integer a = v.next();
-            for(int i=0;i<vertices.get(a).size();i++){
-                if(vertices.get(a).get(i).getVerticeDestino()==vertice){ 
-                    borrarArco(a, vertice);
-                }
-            }
+        while(v.hasNext()){
+            borrarArco(v.next(), vertice);
         }
     }
 
@@ -118,9 +115,9 @@ public class GrafoDirigido<T> implements Grafo<T> {
     }
 
     /*
-     * La funcion obtenerArco() cuenta con una complejidad de O(n) dado que dentro de la funcion se iteran todos los arcos
-     * de un vertice (vertice1), y en el peor de los casos este vertice puede llegar a estar conectado a todos los otros 
-     * vertices del grafo.
+     * La funcion obtenerArco() cuenta con una complejidad de O(n) donde n es la cantidad de arcos que tiene un vertice, 
+     * y tiene dicha complejidad dado que dentro de la funcion se iteran todos los arcos de un vertice (vertice1), y en 
+     * el peor de los casos este vertice puede llegar a estar conectado a todos los otros vertices del grafo.
      */
     @Override
     public Arco<T> obtenerArco(int vertice1, int vertice2) {
@@ -144,22 +141,6 @@ public class GrafoDirigido<T> implements Grafo<T> {
     public int cantidadVertices() {
         return vertices.size();
     }
-
-    // /*
-    //  * La funcion cantidadArcos() cuenta con una complejidad de O(n) donde n es la cantidad total de arcos que puede llegar
-    //  * a tener un grafo, ya que para obtener la cantidad total de arcos es necesario iterarlos.
-    //  */
-
-    // @Override
-    // public int cantidadArcos() {
-    //     // int salida=0;
-    //     // Iterator<Arco<T>> arcos = obtenerArcos();
-    //     // while(arcos.hasNext()){
-    //     //     arcos.next();
-    //     //     salida++;
-    //     // }
-    //     // return salida;
-    // }
 
     /*
      * La funcion cantidadArcos() cuenta con una complejidad O(1) ya que de manera similar a la funcion size() de una 
@@ -200,7 +181,8 @@ public class GrafoDirigido<T> implements Grafo<T> {
     }
 
     /*
-     * La funcion obtenerArcos() devuelve un iterador y tiene una complejidad de O(1) porque simplemente lo instancia
+     * La funcion obtenerArcos(int vertice) devuelve un iterador y tiene una complejidad de O(1) porque simplemente 
+     * lo instancia
      */
     @Override
     public Iterator<Arco<T>> obtenerArcos(int vertice) {
