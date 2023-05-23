@@ -41,18 +41,19 @@ public class ServicioCaminos {
         if(limite>=0){ 
             if(v.equals(destino)){
                 salida.add(new LinkedList<>(camino));
-            }else{
-                Iterator<Integer> vertices = grafo.obtenerAdyacentes(v);
-                while(vertices.hasNext()){
-                    int vertice = vertices.next();
-                    Arco<?>arco = grafo.obtenerArco(v, vertice);
-                    if(map.get(arco)=="NO_VISITED") 
-                        caminos(vertice, limite-1, arco); 
-                }
             }
+            Iterator<Integer> vertices = grafo.obtenerAdyacentes(v);
+            while(vertices.hasNext()){
+                int vertice = vertices.next();
+                Arco<?>arco = grafo.obtenerArco(v, vertice);
+                if(map.get(arco)=="NO_VISITED") 
+                    caminos(vertice, limite-1, arco); 
+            }
+            
         }
         if(arcoActual!=null)
             map.put(arcoActual, "NO_VISITED");
+            
         camino.remove(camino.size()-1);
         
     }

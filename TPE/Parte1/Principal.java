@@ -1,7 +1,5 @@
 package Parte1;
 
-import java.util.Iterator;
-
 public class Principal {
     
     public static void main(String[]args){
@@ -32,6 +30,7 @@ public class Principal {
         grafo.agregarArco(7, 3, 120);
         grafo.agregarArco(7, 6, 130);
         grafo.agregarArco(7, 8, 140);
+        
 
 
 
@@ -41,19 +40,20 @@ public class Principal {
         // System.out.println(dfs.dfsForest().toString());
         // System.out.println(bfs.bfsForest().toString());
 
-        ServicioCaminos servicioCaminos = new ServicioCaminos(grafo, 2, 5, 6);
-        // System.out.println(servicioCaminos.caminos().toString());
-
         // grafo.borrarVertice(1);
-        grafo.agregarVertice(1);
+
+        ServicioCaminos servicioCaminos = new ServicioCaminos(grafo, 2, 5, 5);
+        System.out.println(servicioCaminos.caminos().toString());
+
+
 
         // Iterator<Integer> it=grafo.obtenerVertices();
-        Iterator<Integer> it=grafo.obtenerAdyacentes(1);
+       
 
-        while(it.hasNext())
-        System.out.println(it.next());
+        // while(it.hasNext())
+        // System.out.println(it.next());
 
-        System.out.println(grafo.cantidadVertices()+" "+grafo.cantidadArcos());
+        // System.out.println(grafo.cantidadVertices()+" "+grafo.cantidadArcos());
     }
 }
         
