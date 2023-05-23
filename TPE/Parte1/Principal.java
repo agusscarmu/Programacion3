@@ -42,7 +42,7 @@ public class Principal {
 
         // grafo.borrarVertice(1);
 
-        ServicioCaminos servicioCaminos = new ServicioCaminos(grafo, 2, 5, 5);
+        ServicioCaminos servicioCaminos = new ServicioCaminos(grafo, 2, 2, 4);
         System.out.println(servicioCaminos.caminos().toString());
 
 
