@@ -42,14 +42,14 @@ public class Principal {
 
         // grafo.borrarVertice(1);
 
-        ServicioCaminos servicioCaminos = new ServicioCaminos(grafo, 2, 2, 4);
+        ServicioCaminos servicioCaminos = new ServicioCaminos(grafo, 2, 5, 4);
         System.out.println(servicioCaminos.caminos().toString());
 
 
 
-        // Iterator<Integer> it=grafo.obtenerVertices();
+        // Iterator<Arco<Integer>> it=grafo.obtenerArcos();
        
-
+        
         // while(it.hasNext())
         // System.out.println(it.next());
 
