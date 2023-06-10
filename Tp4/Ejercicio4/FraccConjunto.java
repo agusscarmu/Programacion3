@@ -13,24 +13,35 @@ public class FraccConjunto {
 
     public LinkedList<Subconjuntos> fraccionar(){
         LinkedList<Integer> subConjunto1 = new LinkedList<>();
-        LinkedList<Integer> subConjunto2 = new LinkedList<>(lista);
+        LinkedList<Integer> subConjunto2 = new LinkedList<>();
         cargarFracciones(subConjunto1,subConjunto2);
         return listaSubconjuntos;
     }
 
     private void cargarFracciones(LinkedList<Integer> subConjunto1,LinkedList<Integer> subConjunto2){
         
-        if(sum(subConjunto1)==sum(subConjunto2)){
+       if(lista.isEmpty()){
+            if(sum(subConjunto1)==sum(subConjunto2)){
             Subconjuntos subconjuntos = new Subconjuntos(new LinkedList<>(subConjunto1), new LinkedList<>(subConjunto2));
             listaSubconjuntos.add(subconjuntos);
-        }else{
-            for(int i=0;i<subConjunto2.size();i++){
-                Integer sc=subConjunto2.pop();
-                subConjunto1.add(sc);
-                cargarFracciones(subConjunto1, subConjunto2);
-                subConjunto2.add(sc);
-                subConjunto1.remove(sc);
             }
+        }else{
+                // Integer sc = lista.pop();
+                // cargarFracciones(subConjunto1, subConjunto2);
+                // lista.addFirst(sc);
+
+                Integer sc=lista.pop();
+                subConjunto1.addFirst(sc);
+                cargarFracciones(subConjunto1, subConjunto2);
+                lista.addFirst(sc);
+                subConjunto1.removeFirst();
+
+                sc=lista.pop();
+                subConjunto2.addFirst(sc);
+                cargarFracciones(subConjunto1, subConjunto2);
+                lista.addFirst(sc);
+                subConjunto2.removeFirst();
+            
         }
     }
 

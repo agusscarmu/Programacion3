@@ -11,23 +11,30 @@ public class Suma {
         this.salida=new LinkedList<>();
     }
 
-    public List<List<Integer>> SumasPosibles(int numero, List<Integer> listaNumeros){
-        List<Integer> elementos = new LinkedList<>();
+    public List<List<Integer>> SumasPosibles(int numero, LinkedList<Integer> listaNumeros){
+        LinkedList<Integer> elementos = new LinkedList<>();
         SumasPosibles(numero, listaNumeros, elementos, 0, 0);
         return salida;
     }
 
-    private void SumasPosibles(int numero, List<Integer> lista, List<Integer> elementos, int suma, int elem){
-        if(suma==numero){
-            salida.add(new LinkedList<>(elementos));
-        }else if(suma<numero){
-            for(Integer e:lista){
-                suma+=e;
-                elementos.add(e);
-                SumasPosibles(numero, lista, elementos, suma, e);
-                suma-=e;
-                elementos.remove(elementos.size()-1);
-            }
+    private void SumasPosibles(int numero, LinkedList<Integer> lista, LinkedList<Integer> elementos, int suma, int elem){
+        if(lista.isEmpty()){
+            if(suma==numero)
+                salida.add(new LinkedList<>(elementos));
+        }else{
+            Integer num = lista.removeFirst();
+            SumasPosibles(numero, lista, elementos, suma, elem);
+            lista.addFirst(num);
+
+            
+            num=lista.removeFirst();
+            suma+=num;
+            elementos.addFirst(num);
+            if(suma<=numero)
+                SumasPosibles(numero, lista, elementos, suma, num);
+            suma-=num;
+            lista.addFirst(num);
+            elementos.removeFirst();           
         }
     }
 }
