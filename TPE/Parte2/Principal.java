@@ -13,7 +13,7 @@ public class Principal {
 		Busqueda busqueda = new Busqueda(grafo);
 
 		busqueda.backtracking();
-		System.out.println("----------------------");
+		// System.out.println("----------------------");
 		busqueda.greedy();
 		
 	}
