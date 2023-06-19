@@ -9,12 +9,13 @@ public class Principal {
 		reader.read();
 
 		GrafoNoDirigido<Integer> grafo = reader.traerGrafo();
-		// System.out.println(grafo.cantidadVertices());
+		System.out.println(grafo.cantidadVertices());
 		Busqueda busqueda = new Busqueda(grafo);
 
 		busqueda.backtracking();
-		// System.out.println("----------------------");
+		System.out.println("---------------------------------------");
 		busqueda.greedy();
+
 		
 	}
 

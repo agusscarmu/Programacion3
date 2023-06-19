@@ -10,7 +10,7 @@ public class Busqueda {
 
     private int saltos, mejorKm;
     private HashMap<Integer,Boolean> visitados;
-    private LinkedList<Integer> solucion;
+    private LinkedList<Arco<Integer>> solucion;
     private GrafoNoDirigido<Integer> grafo;
 
     public Busqueda(GrafoNoDirigido<Integer> grafo){
@@ -19,7 +19,7 @@ public class Busqueda {
         this.visitados=new HashMap<>();
     }
 
-    
+
     public void greedy(){
         mejorKm=0;
         saltos=0;
@@ -28,8 +28,10 @@ public class Busqueda {
         while (!C.isEmpty()){
             saltos++;
             C.remove(v);
-            solucion.add(v);
-            v = mejorAdyacente(v,C);
+            Integer vA = mejorAdyacente(v,C);
+            if(vA!=null)
+                solucion.add(grafo.obtenerArco(v, vA));
+            v=vA;
         }
         imprimirSolucion("Greedy");
         solucion.clear();
@@ -45,19 +47,19 @@ public class Busqueda {
         vertices = grafo.obtenerVertices();
         while(vertices.hasNext()){
             saltos++;
-            backtracking(vertices.next(), new LinkedList<>(), 0);
+            Integer v = vertices.next();
+            backtracking(v, new LinkedList<>(), 0,1);
         }
         imprimirSolucion("Backtracking");
         solucion.clear();
     }
 
-    private void backtracking(Integer vertice, LinkedList<Integer> posibleSolucion, int km){
+    private void backtracking(Integer vertice ,LinkedList<Arco<Integer>> l, int km, int solucionActual){
         saltos++;
-        posibleSolucion.addFirst(vertice);
         visitados.put(vertice, true);
         
-        if(grafo.cantidadVertices()==posibleSolucion.size()){
-            solucion=new LinkedList<>(posibleSolucion);
+        if(grafo.cantidadVertices()==solucionActual){
+            solucion=new LinkedList<>(l);
             mejorKm=km;        
         }else{
             Iterator<Integer>adj=grafo.obtenerAdyacentes(vertice);
@@ -65,12 +67,13 @@ public class Busqueda {
                 Integer a = adj.next();
                 Arco<Integer> arco=grafo.obtenerArco(a, vertice);
                 if(!visitados.get(a) && (km+arco.getEtiqueta())<mejorKm){
-                    backtracking(a, posibleSolucion, km+arco.getEtiqueta());
+                    l.addFirst(arco);
+                    backtracking(a ,l, km+arco.getEtiqueta(),solucionActual+1);
+                    l.removeFirst();
                 }
             }    
         }
         visitados.put(vertice, false);
-        posibleSolucion.removeFirst();
     }
 
     private void imprimirSolucion(String algoritmo){
@@ -81,23 +84,25 @@ public class Busqueda {
     }
 
     private Integer mejorAdyacente(Integer v, LinkedList<Integer> C){
-        Integer r=0;
+        Integer r=null;
         Integer mejorDistancia=Integer.MAX_VALUE;
-        Iterator<Integer> adj= grafo.obtenerAdyacentes(v);
-        while(adj.hasNext()){
-            // saltos++;
-            Integer a = adj.next();
-            if(C.contains(a)){
-                Arco<Integer> arc = grafo.obtenerArco(v, a);
-                if(arc.getEtiqueta()<mejorDistancia){
-                    mejorDistancia=arc.getEtiqueta();
-                    r=a;
+        if(v!=null){
+            Iterator<Integer> adj= grafo.obtenerAdyacentes(v);
+            while(adj.hasNext()){
+                // saltos++;
+                Integer a = adj.next();
+                if(C.contains(a)){
+                    Arco<Integer> arc = grafo.obtenerArco(v, a);
+                    if(arc.getEtiqueta()<mejorDistancia){
+                        mejorDistancia=arc.getEtiqueta();
+                        r=a;
+                    }
                 }
             }
-        }
-        if(r!=0){
-            Arco<Integer> arc = grafo.obtenerArco(r, v);
-            mejorKm+=arc.getEtiqueta();
+            if(r!=null){
+                Arco<Integer> arc = grafo.obtenerArco(r, v);
+                mejorKm+=arc.getEtiqueta();
+            }
         }
         return r;
     }

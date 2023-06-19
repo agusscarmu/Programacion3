@@ -30,12 +30,8 @@ public class CSVReader {
 			Integer destino = Integer.parseInt(line[1].trim().substring(1));
 			Integer etiqueta = Integer.parseInt(line[2].trim());
 			
-			if(!grafo.contieneVertice(origen)){
-				grafo.agregarVertice(origen);
-			}
-			if(!grafo.contieneVertice(destino)){
-				grafo.agregarVertice(destino);
-			}
+			grafo.agregarVertice(origen);
+			grafo.agregarVertice(destino);
 			grafo.agregarArco(origen, destino, etiqueta);
 		}
 
