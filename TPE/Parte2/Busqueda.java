@@ -9,7 +9,7 @@ public class Busqueda {
     
 
     private int saltos, mejorKm;
-    private HashMap<Integer,Boolean> visitados;
+    private HashMap<Arco<Integer>,Boolean> visitados;
     private LinkedList<Arco<Integer>> solucion;
     private GrafoNoDirigido<Integer> grafo;
 
@@ -40,40 +40,41 @@ public class Busqueda {
     public void backtracking(){
         mejorKm=Integer.MAX_VALUE;
         saltos=0;
-        Iterator<Integer> vertices = grafo.obtenerVertices();
-        while(vertices.hasNext()){
-            visitados.put(vertices.next(), false);
+        Iterator<Arco<Integer>> arcos = grafo.obtenerArcos();
+        LinkedList<Arco<Integer>> listaArcos = new LinkedList<>();
+        while(arcos.hasNext()){
+            Arco<Integer> arc=arcos.next();
+            visitados.put(arc, false);
+            listaArcos.addFirst(arc);
         }
-        vertices = grafo.obtenerVertices();
-        while(vertices.hasNext()){
-            saltos++;
-            Integer v = vertices.next();
-            backtracking(v, new LinkedList<>(), 0,1);
-        }
+        
+        backtracking(listaArcos.getFirst(),listaArcos, new LinkedList<>(), 0);
+        
         imprimirSolucion("Backtracking");
         solucion.clear();
     }
 
-    private void backtracking(Integer vertice ,LinkedList<Arco<Integer>> l, int km, int solucionActual){
+    private void backtracking(Arco<Integer> arcoActual,LinkedList<Arco<Integer>> arcos ,LinkedList<Arco<Integer>> l, int km){
         saltos++;
-        visitados.put(vertice, true);
+        visitados.put(arcoActual, true);
         
-        if(grafo.cantidadVertices()==solucionActual){
-            solucion=new LinkedList<>(l);
-            mejorKm=km;        
+        if(isFullyConnected(l)){ 
+            if(mejorKm>km){
+                solucion=new LinkedList<>(l);
+                mejorKm=km; 
+            }       
         }else{
-            Iterator<Integer>adj=grafo.obtenerAdyacentes(vertice);
-            while(adj.hasNext()){
-                Integer a = adj.next();
-                Arco<Integer> arco=grafo.obtenerArco(a, vertice);
-                if(!visitados.get(a) && (km+arco.getEtiqueta())<mejorKm){
-                    l.addFirst(arco);
-                    backtracking(a ,l, km+arco.getEtiqueta(),solucionActual+1);
+            Iterator<Arco<Integer>> iterador = grafo.obtenerArcos();
+            while(iterador.hasNext()){
+                Arco<Integer> a = iterador.next();
+                if(!visitados.get(a) && (km+a.getEtiqueta())<mejorKm && inSolution(l,a)){
+                    l.addFirst(a);
+                    backtracking(a,arcos ,l, km+a.getEtiqueta());
                     l.removeFirst();
                 }
             }    
         }
-        visitados.put(vertice, false);
+        visitados.put(arcoActual, false);
     }
 
     private void imprimirSolucion(String algoritmo){
@@ -89,7 +90,7 @@ public class Busqueda {
         if(v!=null){
             Iterator<Integer> adj= grafo.obtenerAdyacentes(v);
             while(adj.hasNext()){
-                // saltos++;
+                saltos++;
                 Integer a = adj.next();
                 if(C.contains(a)){
                     Arco<Integer> arc = grafo.obtenerArco(v, a);
@@ -116,5 +117,41 @@ public class Busqueda {
         return conjunto;
     }
 
+    public boolean isFullyConnected(LinkedList<Arco<Integer>> l) {
+        UnionFind uf = new UnionFind(grafo.cantidadVertices());
+
+        for (Arco<Integer> arco:l) {
+            int u = arco.getVerticeOrigen()-1;
+            int v = arco.getVerticeDestino()-1;
+            uf.union(u, v);
+        }
+
+        int representative = uf.find(0);
+        for (int i = 1; i < grafo.cantidadVertices(); i++) {
+            if (uf.find(i) != representative) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean inSolution(LinkedList<Arco<Integer>> l, Arco<Integer> arcoAct){
+        UnionFind uf = new UnionFind(grafo.cantidadVertices());
+
+        for (Arco<Integer> arco:l) {
+            int u = arco.getVerticeOrigen()-1;
+            int v = arco.getVerticeDestino()-1;
+            uf.union(u, v);
+        }
+        int representative = uf.find(0);
+        if (uf.find(arcoAct.getVerticeOrigen()-1) != representative && uf.find(arcoAct.getVerticeDestino()-1) != representative) {
+            return false;
+        }
+        
+        
+        return true;
+    }
+    
 }
 
