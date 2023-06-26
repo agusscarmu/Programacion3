@@ -23,18 +23,51 @@ public class Busqueda {
     public void greedy(){
         mejorKm=0;
         saltos=0;
-        LinkedList<Integer> C = C();
-        Integer v = C.getFirst();
-        while (!C.isEmpty()){
+        int[]menor_costo=new int[grafo.cantidadVertices()+1];
+        int[]mas_cercano=new int[grafo.cantidadVertices()+1];
+        int[]visitado=new int[grafo.cantidadVertices()+1];
+        // Iterator<Integer> vertices = grafo.obtenerVertices();
+        // Integer pV=vertices.next();
+        for(int i = 2; i<=grafo.cantidadVertices();i++){
+            menor_costo[i]=grafo.obtenerArco(1, i).getEtiqueta();
+            mas_cercano[i]=1;
+            visitado[i]=0;
+        }
+        for(int i=2;i<menor_costo.length;i++){
             saltos++;
-            C.remove(v);
-            Integer vA = mejorAdyacente(v,C);
-            if(vA!=null)
-                solucion.add(grafo.obtenerArco(v, vA));
-            v=vA;
+            Integer w = min(menor_costo,visitado);
+            visitado[w]=1;
+            Arco<Integer> a = grafo.obtenerArco(w, mas_cercano[w]);
+            solucion.add(a);
+            mejorKm+=a.getEtiqueta();
+            for(int j=2;j<menor_costo.length;j++){
+                saltos++;
+                if(costo(w,j) < menor_costo[j]){
+                    menor_costo[j]=grafo.obtenerArco(w, j).getEtiqueta();
+                    mas_cercano[j]=w;
+                }
+            }
         }
         imprimirSolucion("Greedy");
-        solucion.clear();
+
+    }
+
+    public int costo(int w, int j){
+        try{
+            return grafo.obtenerArco(w, j).getEtiqueta();
+        }catch(Exception e){
+            return Integer.MAX_VALUE;
+        }
+    }
+    
+    public Integer min(int[]menor_costo, int[]s){
+        Integer menor = Integer.MAX_VALUE;
+        for(int i=2;i<menor_costo.length;i++){
+            if(menor_costo[i]<menor && s[i]!=1){
+                menor=i;
+            }
+        }
+        return menor;
     }
     
     public void backtracking(){
