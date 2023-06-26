@@ -144,6 +144,8 @@ public class Busqueda {
             int v = arco.getVerticeDestino()-1;
             uf.union(u, v);
         }
+
+        //Controla que los vertices del arco no tengan el mismo padre, de ser asi, retorna falso
         int representative = uf.find(0);
         if (uf.find(arcoAct.getVerticeOrigen()-1) != representative && uf.find(arcoAct.getVerticeDestino()-1) != representative) {
             return false;
@@ -154,4 +156,3 @@ public class Busqueda {
     }
     
 }
-

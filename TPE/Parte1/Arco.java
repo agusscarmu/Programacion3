@@ -25,7 +25,7 @@ public class Arco<T> {
 
     @Override
     public String toString() {
-        return "["+verticeOrigen+", "+verticeDestino+"]";
+        return "[E"+verticeOrigen+", E"+verticeDestino+"]";
     }
     
     @Override

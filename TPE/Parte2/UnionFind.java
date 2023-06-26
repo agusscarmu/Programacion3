@@ -20,13 +20,14 @@ class UnionFind {
     }
 
     public void union(int x, int y) {
+        //busca el padre de cada uno
         int rootX = find(x);
         int rootY = find(y);
 
         if (rootX == rootY) {
             return;
         }
-
+        //controla los elementos que tiene cada uno para posicionar el padre
         if (rank[rootX] < rank[rootY]) {
             parent[rootX] = rootY;
         } else if (rank[rootX] > rank[rootY]) {
