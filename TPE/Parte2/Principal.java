@@ -9,10 +9,8 @@ public class Principal {
 		reader.read();
 
 		GrafoNoDirigido<Integer> grafo = reader.traerGrafo();
-		System.out.println(grafo.cantidadVertices());
 		Busqueda busqueda = new Busqueda(grafo);
-		System.out.println(grafo.obtenerArco(11, 5));
-		// busqueda.backtracking();
+		busqueda.backtracking();
 		System.out.println("---------------------------------------");
 		busqueda.greedy();
 
