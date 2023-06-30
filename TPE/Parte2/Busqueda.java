@@ -1,4 +1,3 @@
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -9,17 +8,15 @@ public class Busqueda {
     
 
     private int saltos, mejorKm;
-    private HashMap<Arco<Integer>,Boolean> visitados;
     private LinkedList<Arco<Integer>> solucion;
     private GrafoNoDirigido<Integer> grafo;
 
     public Busqueda(GrafoNoDirigido<Integer> grafo){
         this.grafo=grafo;
         this.solucion=new LinkedList<>();
-        this.visitados=new HashMap<>();
     }
 
-
+    //O(n^3)
     public void greedy(){
         mejorKm=0;
         saltos=0;
@@ -73,39 +70,33 @@ public class Busqueda {
     
     public void backtracking(){
         mejorKm=Integer.MAX_VALUE;
-        saltos=0;
-        Iterator<Arco<Integer>> arcos = grafo.obtenerArcos();
-        while(arcos.hasNext()){
-            Arco<Integer> arc=arcos.next();
-            visitados.put(arc, false);
-        }
-        
+        saltos=0;      
         LinkedList<Arco<Integer>> arcs = obtenerArcosNoRepetidos();
+
         backtracking(null, arcs, new LinkedList<>(), 0);
         
         imprimirSolucion("Backtracking");
         solucion.clear();
     }
-    //O(36!/5!*31!)???
+
+    //O(n!)
     private void backtracking(Arco<Integer> arcoActual, LinkedList<Arco<Integer>> arcos, LinkedList<Arco<Integer>> l, int km){
         saltos++;
-        if(arcoActual!=null)
-            visitados.put(arcoActual, true);
-        
-        if(todoConectado(l)){ 
+        if((l.size() == grafo.cantidadVertices()-1)){ 
                 solucion=new LinkedList<>(l);
                 mejorKm=km; 
         }else{
-            for(Arco<Integer> a:arcos){
-                if(!visitados.get(a) && (km+a.getEtiqueta())<mejorKm && enSolucion(l, a)){
+            for(int i=0;i<arcos.size();i++){
+                Arco<Integer> a = arcos.remove(i);
+                if((km+a.getEtiqueta())<mejorKm && !enSolucion(l, a)){
                     l.addFirst(a);
                     backtracking(a, arcos, l,km+a.getEtiqueta());
                     l.removeFirst();
                 }
+                arcos.add(i, a);
             }    
         }
-        if(arcoActual!=null)
-            visitados.put(arcoActual, false);
+        
     }
 
     private void imprimirSolucion(String algoritmo){
@@ -115,46 +106,38 @@ public class Busqueda {
         System.out.println(saltos + " Metrica");
     }
 
-    private boolean todoConectado(LinkedList<Arco<Integer>> l) {
-        UnionFind uf = new UnionFind(grafo.cantidadVertices());
 
-        for (Arco<Integer> arco:l) {
-            int u = arco.getVerticeOrigen()-1;
-            int v = arco.getVerticeDestino()-1;
-            uf.union(u, v);
-        }
-
-        int representative = uf.find(0);
-        for (int i = 1; i < grafo.cantidadVertices(); i++) {
-            if (uf.find(i) != representative) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
+    /*
+     * O(v + v*n)
+     * Teniendo en cuenta que v = n-1  ->  O(n^2) 
+     */
     private boolean enSolucion(LinkedList<Arco<Integer>> l, Arco<Integer> arcoAct){
         UnionFind uf = new UnionFind(grafo.cantidadVertices());
 
+        /*
+         * O(v*n)
+         * v=cantidad de vertices
+         * n=cantidad de arcos
+         */
         for (Arco<Integer> arco:l) {
             int u = arco.getVerticeOrigen()-1;
             int v = arco.getVerticeDestino()-1;
             uf.union(u, v);
         }
 
-       
+        //O(v)
         if (uf.find(arcoAct.getVerticeOrigen()-1) != uf.find(arcoAct.getVerticeDestino()-1)) {
-            return true;
+            return false;
         }
         
         
-        return false;
+        return true;
     }
     
     private LinkedList<Arco<Integer>> obtenerArcosNoRepetidos(){
         LinkedList<Arco<Integer>> arcos = new LinkedList<>();
         Iterator<Arco<Integer>> a = grafo.obtenerArcos();
+        //O(n^2)
         while(a.hasNext()){
             Arco<Integer> arc = a.next();
             if(notIn(arc, arcos)){

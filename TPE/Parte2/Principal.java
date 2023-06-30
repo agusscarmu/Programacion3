@@ -10,7 +10,7 @@ public class Principal {
 
 		GrafoNoDirigido<Integer> grafo = reader.traerGrafo();
 		Busqueda busqueda = new Busqueda(grafo);
-		// busqueda.backtracking();
+		busqueda.backtracking();
 		System.out.println("---------------------------------------");
 		busqueda.greedy();
 		
