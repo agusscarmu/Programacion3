@@ -26,8 +26,6 @@ public class Busqueda {
         int[]menor_costo=new int[grafo.cantidadVertices()+1];
         int[]mas_cercano=new int[grafo.cantidadVertices()+1];
         int[]s=new int[grafo.cantidadVertices()+1];
-        // Iterator<Integer> vertices = grafo.obtenerVertices();
-        // Integer pV=vertices.next();
         for(int i = 2; i<=grafo.cantidadVertices();i++){
             menor_costo[i]=grafo.obtenerArco(1, i).getEtiqueta();
             mas_cercano[i]=1;
@@ -53,7 +51,7 @@ public class Busqueda {
 
     }
 
-    public int costo(int w, int j){
+    private int costo(int w, int j){
         try{
             return grafo.obtenerArco(w, j).getEtiqueta();
         }catch(Exception e){
@@ -61,7 +59,7 @@ public class Busqueda {
         }
     }
     
-    public Integer min(int[]menor_costo, int[]s){
+    private Integer min(int[]menor_costo, int[]s){
         Integer menor = Integer.MAX_VALUE;
         Integer valorMenor = Integer.MAX_VALUE;
         for(int i=2;i<menor_costo.length;i++){
@@ -82,13 +80,14 @@ public class Busqueda {
             visitados.put(arc, false);
         }
         
-        backtracking(null, new LinkedList<>(), 0);
+        LinkedList<Arco<Integer>> arcs = obtenerArcosNoRepetidos();
+        backtracking(null, arcs, new LinkedList<>(), 0);
         
         imprimirSolucion("Backtracking");
         solucion.clear();
     }
-
-    private void backtracking(Arco<Integer> arcoActual, LinkedList<Arco<Integer>> l, int km){
+    //O(36!/5!*31!)???
+    private void backtracking(Arco<Integer> arcoActual, LinkedList<Arco<Integer>> arcos, LinkedList<Arco<Integer>> l, int km){
         saltos++;
         if(arcoActual!=null)
             visitados.put(arcoActual, true);
@@ -97,12 +96,10 @@ public class Busqueda {
                 solucion=new LinkedList<>(l);
                 mejorKm=km; 
         }else{
-            Iterator<Arco<Integer>> iterador = grafo.obtenerArcos();
-            while(iterador.hasNext()){
-                Arco<Integer> a = iterador.next();
-                if(!visitados.get(a) && (km+a.getEtiqueta())<mejorKm && inSolution(l,a)){
+            for(Arco<Integer> a:arcos){
+                if(!visitados.get(a) && (km+a.getEtiqueta())<mejorKm && enSolucion(l, a)){
                     l.addFirst(a);
-                    backtracking(a, l, km+a.getEtiqueta());
+                    backtracking(a, arcos, l,km+a.getEtiqueta());
                     l.removeFirst();
                 }
             }    
@@ -118,7 +115,7 @@ public class Busqueda {
         System.out.println(saltos + " Metrica");
     }
 
-    public boolean todoConectado(LinkedList<Arco<Integer>> l) {
+    private boolean todoConectado(LinkedList<Arco<Integer>> l) {
         UnionFind uf = new UnionFind(grafo.cantidadVertices());
 
         for (Arco<Integer> arco:l) {
@@ -137,7 +134,7 @@ public class Busqueda {
         return true;
     }
 
-    public boolean inSolution(LinkedList<Arco<Integer>> l, Arco<Integer> arcoAct){
+    private boolean enSolucion(LinkedList<Arco<Integer>> l, Arco<Integer> arcoAct){
         UnionFind uf = new UnionFind(grafo.cantidadVertices());
 
         for (Arco<Integer> arco:l) {
@@ -146,14 +143,34 @@ public class Busqueda {
             uf.union(u, v);
         }
 
-        //Controla que los vertices del arco no tengan el mismo padre, de ser asi, retorna falso
-        int representative = uf.find(0);
-        if (uf.find(arcoAct.getVerticeOrigen()-1) != representative && uf.find(arcoAct.getVerticeDestino()-1) != representative) {
-            return false;
+       
+        if (uf.find(arcoAct.getVerticeOrigen()-1) != uf.find(arcoAct.getVerticeDestino()-1)) {
+            return true;
         }
         
         
-        return true;
+        return false;
     }
     
+    private LinkedList<Arco<Integer>> obtenerArcosNoRepetidos(){
+        LinkedList<Arco<Integer>> arcos = new LinkedList<>();
+        Iterator<Arco<Integer>> a = grafo.obtenerArcos();
+        while(a.hasNext()){
+            Arco<Integer> arc = a.next();
+            if(notIn(arc, arcos)){
+                arcos.add(arc);
+            }
+        }
+        return arcos;
+    }
+
+    private boolean notIn(Arco<Integer> a, LinkedList<Arco<Integer>> lista){
+        for(Arco<Integer> arc:lista){
+            if(a.getVerticeDestino()==arc.getVerticeDestino() && a.getVerticeOrigen()==arc.getVerticeOrigen()
+            || a.getVerticeDestino()==arc.getVerticeOrigen() && a.getVerticeOrigen()==arc.getVerticeDestino()){
+                return false;
+            }
+        }
+        return true;
+    }
 }
