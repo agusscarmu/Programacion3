@@ -57,7 +57,7 @@ public class Busqueda {
     }
     
     private Integer min(int[]menor_costo, int[]s){
-        Integer menor = Integer.MAX_VALUE;
+        Integer menor = 0;
         Integer valorMenor = Integer.MAX_VALUE;
         for(int i=2;i<menor_costo.length;i++){
             if(menor_costo[i]<valorMenor && s[i]!=1){

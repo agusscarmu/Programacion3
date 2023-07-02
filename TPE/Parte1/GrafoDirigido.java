@@ -70,20 +70,25 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
     /*
      * La funcion borrarArco() cuenta con una complejidad O(n) donde n es la cantidad de arcos que tiene el vertice1 (en el 
-     * peor de los casos el vertice1 va a estar conectado a todos los otros vertices del grafo), dado que la funcion 
-     * remove() de una Lista Enlazada de java.util lo que hace es iterar entre todos sus nodos enlazados hasta que el 
-     * elemento que se esta enviando sea igual al elemento inspeccionado en la iteracion. Y tambien hay que tener en cuenta
-     * que la funcion obtenerArco() cuenta con una complejidad O(n)
+     * peor de los casos el vertice1 va a estar conectado a todos los otros vertices del grafo). Lo que se hace en esta funcion
+     * es crear un iterador para obtener los arcos de vertice1 y de esta forma pregunta si el vertice destino es igual a
+     * vertice 2, de ser asi elimina el elemento y disminuye la cantidad de arcos.
      */
     @Override
     public void borrarArco(int vertice1, int vertice2) {
         if(contieneVertice(vertice1)){
-            Arco<T> arco = obtenerArco(vertice1, vertice2);
-            if(vertices.get(vertice1).remove(arco))
-                cantidadArcos--;
+            Iterator<Arco<T>> arcos = obtenerArcos(vertice1);
+            while(arcos.hasNext()){
+                Arco<T> a = arcos.next();
+                if(a.getVerticeDestino() == vertice2){
+                    arcos.remove();
+                    cantidadArcos--;
+                    return;
+                }
+            }
         }
     }
-
+    
     /*
      * La funcion borrarArcos tiene una complejidad de O(n^2) siendo n la cantidad de vertices en el grafo, y tiene dicha 
      * complejidad debido a que en un principio itera todos los vertices del grafo, para despues llamar a la funcion
